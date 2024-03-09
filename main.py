@@ -54,6 +54,8 @@ class Network:
         for i in range(30, 100):
             tier2_1 = random.randint(10, 29)
             tier2_2 = random.randint(10, 29)
+            while tier2_2 == tier2_1:
+                tier2_2 = random.randint(20, 50)
             time_comm = random.randint(20, 50)
             self.add_edge(i, tier2_1, time_comm)
             self.add_edge(i, tier2_2, time_comm)

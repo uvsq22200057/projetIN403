@@ -184,7 +184,10 @@ def dijkstra(graph, node_0):
                 d[neighbor] = dist
                 shortest_paths[neighbor] = shortest_paths.get(node_d_min, []) + [neighbor]
 
-    return shortest_paths
+    items = shortest_paths.items()
+    sorted_items = sorted(items)
+    sorted_paths = {k: v for k, v in sorted_items}
+    return sorted_paths
 
 
 # Fonction tables de routage
@@ -209,6 +212,17 @@ def routing_table(graph):
     return tables
 
 
+# Fonction permettant de retracer le chemin demandé par l'utilisateur
+def path_user(graph, n1, n2):
+    path = [n1]
+    n = n1
+    while n != n2:
+        path.append(routing_table(graph)[n][n2])
+        n = routing_table(graph)[n][n2]
+
+    return path
+
+
 """CRÉATION DU RÉSEAU"""
 
 network = Network(100)
@@ -226,7 +240,9 @@ while not connected_pp(graph):
     for n in network.nodes:
         graph[n.idt] = n.affichage()
 
+
 print("Graphe : ", graph)
 print("Connexe : ", connected_pp(graph))
 print("Dijkstra 0 : ", dijkstra(graph, 0))
 print("Tables de routage : ", routing_table(graph))
+print(path_user(graph, int(input("Saisissez le numéro du noeud émetteur de message:")), int(input("Saisissez le numéro du noeud destinataire:"))))

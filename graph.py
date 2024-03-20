@@ -1,6 +1,8 @@
 import random
 
 
+"""CLASSES NOEUD ET RÉSEAU"""
+
 class Node:
     # Chaque objet nœud qui va être créé aura un identifiant à lui (qui correspondra à un numéro entre 0 et 99)
     # et une liste d'arêtes, dont chacune correspondra à un tuple contenant d'abord le nœud auquel on se connecte
@@ -20,7 +22,6 @@ class Network:
     # correspond au temps de communication de l'arête → juste pour les vérifications).
     def __init__(self, n):
         self.nodes = [Node(i) for i in range(n)]
-        self.graph = {}
 
     # Cette fonction permet d'ajouter une arête au réseau en prenant en paramètre le nœud de depart, celui d'arrivée,
     # et la valeur de l'arête càd le temps de communication.
@@ -57,8 +58,9 @@ class Network:
                 # des non pleins.
                 for i in edges2_not_full:
                     for j in edges2_not_full:
-                        if i !=j:
-                            if i not in (lambda lst: [ngb[0] for ngb in lst])(j.edges) and j not in (lambda lst: [ngb[0] for ngb in lst])(i.edges):
+                        if i != j:
+                            if i not in (lambda lst: [ngb[0] for ngb in lst])(j.edges) and j not in (
+                                    lambda lst: [ngb[0] for ngb in lst])(i.edges):
                                 test = False
                 if test:
                     n2 = random.choice(edges2_2)
@@ -70,7 +72,6 @@ class Network:
                         n2 = random.choice(edges2_not_full)
                 time_comm = random.randint(10, 20)
                 self.add_edge(n1.idt, n2.idt, time_comm)
-                self.graph[(n1, n2)] = time_comm
 
             # S'il ne restait qu'un élément dans la liste, on prend n2 dans la liste de nœuds à 2 arêtes.
             elif len(edges2_not_full) == 1:
@@ -78,7 +79,6 @@ class Network:
                 n2 = random.choice(edges2_2)
                 time_comm = random.randint(10, 20)
                 self.add_edge(n1.idt, n2.idt, time_comm)
-                self.graph[(n1, n2)] = time_comm
                 edges2_2.remove(n2)
 
             # On vérifie à chaque fois si les nœuds choisis contiennent 2 arêtes après la création de la noivelle et si
@@ -101,7 +101,6 @@ class Network:
                 tier1 = random.randint(0, 9)
                 time_comm = random.randint(10, 20)
                 self.add_edge(i, tier1, time_comm)
-                self.graph[(i, tier1)] = time_comm
 
         """Backbone"""
 
@@ -114,7 +113,6 @@ class Network:
                 if prob <= 0.75:
                     time_comm = random.randint(5, 10)
                     self.add_edge(i, j, time_comm)
-                    self.graph[(i, j)] = time_comm
 
         """Tier 3"""
 
@@ -128,14 +126,107 @@ class Network:
             time_comm = random.randint(20, 50)
             self.add_edge(i, tier2_1, time_comm)
             self.add_edge(i, tier2_2, time_comm)
-            self.graph[(i, tier2_1)] = time_comm
-            self.graph[(i, tier2_2)] = time_comm
 
+
+"""FONCTIONS"""
+
+# Fonctions du Parcours en Profondeur pour vérifier la connexité du graphe.
+def connected_pp(graph):
+    n = len(graph)
+    # On initialise la liste des nœuds visités à False.
+    visited = {node: False for node in range(n)}
+    # On prend un nœud au hasard pour commencer le parcours
+    start_node = random.choice(list(graph.keys()))
+    pp(graph, start_node, visited)
+    # Si tous les nœuds ont été visités, on renvoie True s'ils sont tous à True.
+    return all(visited.values())
+
+
+def pp(graph, node, visited):
+    # On dit que le nœud sur lequel on se trouve a été visité.
+    visited[node] = True
+    # On regarde pour chaque arête de la liste l'id du voisin, s'il n'est pas visité, on continue le parcours en
+    # profondeur depuis celui-ci.
+    for neighbor, _ in graph[node]:
+        if not visited[neighbor]:
+            pp(graph, neighbor, visited)
+
+
+# Fonction de l'algorithme de Dijkstra pour calculer les plus courts chemins.
+def dijkstra(graph, node_0):
+    # On initialise les distances pour chaque nœud à + infini et on met 0 pour le nœud de départ.
+    d = {node: float('infinity') for node in graph}
+    d[node_0] = 0
+    # On initialise un dictionnaire pour stocker le chemin le plus court pour chaque nœud destination.
+    shortest_paths = {}
+    # On met tous les nœuds non visités dans une liste.
+    unvisited = list(graph.keys())
+
+    # Tant que la liste de nœuds non visités contient des nœuds, on continue.
+    while unvisited:
+        # On crée une variable pour représenter le nœud le plus proche et on ne met rien dedans au début.
+        node_d_min = None
+        # On regarde pour chaque nœud non visité s'il a une distance inférieure au nœud le plus proche et si oui, on
+        # remplace le nœud le plus proche par celui-ci.
+        for node in unvisited:
+            if node_d_min is None or d[node] < d[node_d_min]:
+                node_d_min = node
+        # Si la valeur du nœud le plus proche est à l'infini, on break, sinon on le retire des nœuds non visités.
+        if d[node_d_min] == float('infinity'):
+            break
+        unvisited.remove(node_d_min)
+
+        # On regarde chaque voisin du nœud de distance min et on ajoute le poids de leur arête à la valeur du nœud min
+        # puis si cette valeur est meilleure, on la remplace et on ajoute le nœud au chemin actuel.
+        for neighbor, weight in graph[node_d_min]:
+            dist = d[node_d_min] + weight
+            if dist < d[neighbor]:
+                d[neighbor] = dist
+                shortest_paths[neighbor] = shortest_paths.get(node_d_min, []) + [neighbor]
+
+    return shortest_paths
+
+
+# Fonction tables de routage
+def routing_table(graph):
+    # On crée un dictionnaire qui contiendra pour chaque nœud dont le numéro sera la clé, une valeur étant un
+    # dictionnaire représentant sa table de routage.
+    tables = {}
+    # On crée une table pour chaque nœud qui est un dictionnaire qui pour donne pour chaque nœud (clé), le premier
+    # nœud par lequel il faut passer (valeur). On calcule Dijkstra pour chaque nœud.
+    for node in graph:
+        table = {}
+        paths = dijkstra(graph, node)
+
+        # Pour chaque plus court chemin depuis le nœud, on prend le premier nœud du chemin.
+        for destination_node, path in paths.items():
+            if destination_node != node and path:
+                next_node = path[0]
+                table[destination_node] = next_node
+
+        tables[node] = table
+
+    return tables
+
+
+"""CRÉATION DU RÉSEAU"""
 
 network = Network(100)
 network.create_network()
 
-print(network.graph)
-
+graph = {}
 for n in network.nodes:
-    print(n.idt, n.affichage())
+    graph[n.idt] = n.affichage()
+
+# On relance la création d'un réseau s'il n'est pas connexe
+while not connected_pp(graph):
+    network = Network(100)
+    network.create_network()
+    graph = {}
+    for n in network.nodes:
+        graph[n.idt] = n.affichage()
+
+print("Graphe : ", graph)
+print("Connexe : ", connected_pp(graph))
+print("Dijkstra 0 : ", dijkstra(graph, 0))
+print("Tables de routage : ", routing_table(graph))

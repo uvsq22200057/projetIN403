@@ -1,7 +1,11 @@
 import random
+import plotly.graph_objects as go
+import numpy as np
+import gradio as gr
 
 
 """CLASSES NOEUD ET RÉSEAU"""
+
 
 class Node:
     # Chaque objet nœud qui va être créé aura un identifiant à lui (qui correspondra à un numéro entre 0 et 99)
@@ -130,6 +134,7 @@ class Network:
 
 """FONCTIONS"""
 
+
 # Fonctions du Parcours en Profondeur pour vérifier la connexité du graphe.
 def connected_pp(graph):
     n = len(graph)
@@ -240,9 +245,67 @@ while not connected_pp(graph):
     for n in network.nodes:
         graph[n.idt] = n.affichage()
 
-
 print("Graphe : ", graph)
 print("Connexe : ", connected_pp(graph))
 print("Dijkstra 0 : ", dijkstra(graph, 0))
 print("Tables de routage : ", routing_table(graph))
-print(path_user(graph, int(input("Saisissez le numéro du noeud émetteur de message:")), int(input("Saisissez le numéro du noeud destinataire:"))))
+# print(path_user(graph, int(input("Saisissez le numéro du noeud émetteur de message:")),
+# int(input("Saisissez le numéro du noeud destinataire:"))))
+
+
+"""VISUALISATION"""
+
+# Création de la fonction pour visualiser le graphe
+def visualize_graph_3d(node1, node2):
+    # Fixer le nombre de nœuds à 100
+    num_nodes = 100
+
+    # Création de la figure
+    fig = go.Figure()
+
+    # Création des nœuds avec des coordonnées aléatoires
+    for node in range(num_nodes):
+        x = np.random.rand()
+        y = np.random.rand()
+        z = np.random.rand()
+        fig.add_trace(go.Scatter3d(x=[x], y=[y], z=[z], mode='markers', name=f'Node {node}'))
+
+    # Si les nœuds de départ et d'arrivée sont spécifiés
+    if node1 != 0 or node2 != 0:
+        # Affichage des arêtes du chemin calculé
+        path = path_user(graph, node1, node2)
+        for i in range(len(path) - 1):
+            x1, y1, z1 = fig.data[path[i]].x[0], fig.data[path[i]].y[0], fig.data[path[i]].z[0]
+            x2, y2, z2 = fig.data[path[i + 1]].x[0], fig.data[path[i + 1]].y[0], fig.data[path[i + 1]].z[0]
+            fig.add_trace(
+                go.Scatter3d(x=[x1, x2], y=[y1, y2], z=[z1, z2], mode='lines', name=f'Path {path[i]}-{path[i + 1]}',
+                             line=dict(color='red', width=4)))
+        shortest_path_text = "Le plus court chemin du noeud {} au noeud {} est :".format(node1, node2)
+        shortest_path_text += "<br>" + " -> ".join(str(node) for node in path)
+    else:
+        # Ajout des arêtes en noir
+        for node1 in range(num_nodes):
+            for node2, _ in graph[node1]:
+                x1, y1, z1 = fig.data[node1].x[0], fig.data[node1].y[0], fig.data[node1].z[0]
+                x2, y2, z2 = fig.data[node2].x[0], fig.data[node2].y[0], fig.data[node2].z[0]
+                fig.add_trace(
+                    go.Scatter3d(x=[x1, x2], y=[y1, y2], z=[z1, z2], mode='lines', name=f'Edge {node1}-{node2}',
+                                 line=dict(color='black', width=2)))
+        shortest_path_text = ""
+
+    # Configuration de la mise en page
+    fig.update_layout(title='3D Graph Visualization', autosize=True)
+    fig.update_layout(annotations=[
+        dict(x=0.5, y=-0.15, showarrow=False, text=shortest_path_text, xref="paper", yref="paper", align="center",
+             font=dict(size=12))])
+
+    # Affichage de la figure
+    return fig
+
+
+# Création des entrées pour Gradio
+node1_input = gr.Number(label="Numéro du nœud 1")
+node2_input = gr.Number(label="Numéro du nœud 2")
+
+# Interface Gradio
+gr.Interface(fn=visualize_graph_3d, inputs=[node1_input, node2_input], outputs="plot").launch()

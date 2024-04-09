@@ -260,9 +260,9 @@ print("Tables de routage : ", routing_table(graph))
 with gr.Blocks(theme=gr.themes.Soft()) as demo:
     title = gr.Label(label="Allez Hop", value="En route avec Thierry", color="black")
     num_nodes = 100
-    tiers_1_color = "blue"
+    tiers_1_color = "orange"
     tiers_2_color = "red"
-    tiers_3_color = "green"
+    tiers_3_color = "purple"
 
     tier1_nodes = list(range(10))
     tier2_nodes = list(range(10, 30))
@@ -315,7 +315,7 @@ with gr.Blocks(theme=gr.themes.Soft()) as demo:
             else :
                 color = tiers_3_color
 
-            fig.add_trace(go.Scatter3d(x=[x], y=[y], z=[z], mode='markers', name=f'Node {node}', marker=dict(color=color), showlegend=False))
+            fig.add_trace(go.Scatter3d(x=[x], y=[y], z=[z], mode='markers', name=f'Node {node}', marker=dict(color=color),showlegend=False))
 
         if node1 != node2:
             path = path_user(graph, node1, node2)

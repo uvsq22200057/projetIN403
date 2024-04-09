@@ -1,5 +1,4 @@
 import random
-
 import matplotlib.pyplot as plt
 import plotly.graph_objects as go
 import numpy as np
@@ -287,7 +286,7 @@ with gr.Blocks(theme=gr.themes.Soft()) as demo:
             else :
                 color = tiers_3_color
 
-            fig.add_trace(go.Scatter3d(x=[x], y=[y], z=[z], mode='markers', name=f'Node {node}', marker=dict(color=color), showlegend=False))
+            fig.add_trace(go.Scatter3d(x=[x], y=[y], z=[z], mode='markers', name=f'Node {node}', marker=dict(color=color)))
 
         for node1 in range(num_nodes):
             for node2, _ in graph[node1]:
@@ -295,7 +294,7 @@ with gr.Blocks(theme=gr.themes.Soft()) as demo:
                 x2, y2, z2 = fig.data[node2].x[0], fig.data[node2].y[0], fig.data[node2].z[0]
                 fig.add_trace(
                     go.Scatter3d(x=[x1, x2], y=[y1, y2], z=[z1, z2], mode='lines', name=f'Edge {node1}-{node2}',
-                                 line=dict(color='grey', width=2), showlegend=False))
+                                 line=dict(color='grey', width=2)))
         return 1, 1, message1, message, fig
 
 
@@ -315,7 +314,7 @@ with gr.Blocks(theme=gr.themes.Soft()) as demo:
             else :
                 color = tiers_3_color
 
-            fig.add_trace(go.Scatter3d(x=[x], y=[y], z=[z], mode='markers', name=f'Node {node}', marker=dict(color=color), showlegend=False))
+            fig.add_trace(go.Scatter3d(x=[x], y=[y], z=[z], mode='markers', name=f'Node {node}', marker=dict(color=color)))
 
         if node1 != node2:
             path = path_user(graph, node1, node2)
@@ -329,7 +328,7 @@ with gr.Blocks(theme=gr.themes.Soft()) as demo:
                         0]
                 fig.add_trace(
                     go.Scatter3d(x=[x1, x2], y=[y1, y2], z=[z1, z2], mode='lines', name=f'Path {path[i]}-{path[i + 1]}',
-                                 line=dict(color='black', width=4), showlegend=False))
+                                 line=dict(color='black', width=4)))
 
             fig.update_layout(annotations=[
                 dict(x=0.5, y=-0.15, showarrow=False, xref="paper", yref="paper", align="center",
@@ -357,7 +356,7 @@ with gr.Blocks(theme=gr.themes.Soft()) as demo:
             else :
                 color = tiers_3_color
 
-            fig.add_trace(go.Scatter3d(x=[x], y=[y], z=[z], mode='markers', name=f'Node {node}', marker=dict(color=color), showlegend=False))
+            fig.add_trace(go.Scatter3d(x=[x], y=[y], z=[z], mode='markers', name=f'Node {node}', marker=dict(color=color)))
 
         for nodea in range(num_nodes):
             for nodeb, _ in graph[nodea]:
@@ -365,7 +364,7 @@ with gr.Blocks(theme=gr.themes.Soft()) as demo:
                 x2, y2, z2 = fig.data[nodeb].x[0], fig.data[nodeb].y[0], fig.data[nodeb].z[0]
                 fig.add_trace(
                     go.Scatter3d(x=[x1, x2], y=[y1, y2], z=[z1, z2], mode='lines', name=f'Edge {nodea}-{nodeb}',
-                                 line=dict(color='grey', width=2), showlegend=False))
+                                 line=dict(color='grey', width=2)))
 
         fig.update_layout(annotations=[
             dict(x=0.5, y=-0.15, showarrow=False, xref="paper", yref="paper", align="center",

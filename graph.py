@@ -85,7 +85,7 @@ class Network:
                 self.add_edge(n1.idt, n2.idt, time_comm)
                 edges2_2.remove(n2)
 
-            # On vérifie à chaque fois si les nœuds choisis contiennent 2 arêtes après la création de la noivelle et si
+            # On vérifie à chaque fois si les nœuds choisis contiennent 2 arêtes après la création de la nouvelle et si
             # oui, on les supprime de la liste des nœuds non pleins pour l'ajouter à celle des nœuds à 2 arêtes
             if len(n1.edges) == 2:
                 edges2_2.append(n1)
@@ -275,8 +275,8 @@ def visualize_graph_3d(node1, node2):
         # Affichage des arêtes du chemin calculé
         path = path_user(graph, node1, node2)
         for i in range(len(path) - 1):
-            x1, y1, z1 = fig.data[path[i]].x[0], fig.data[path[i]].y[0], fig.data[path[i]].z[0]
-            x2, y2, z2 = fig.data[path[i + 1]].x[0], fig.data[path[i + 1]].y[0], fig.data[path[i + 1]].z[0]
+            x1, y1, z1 = fig.data[int(path[i])].x[0], fig.data[int(path[i])].y[0], fig.data[int(path[i])].z[0]
+            x2, y2, z2 = fig.data[int(path[i + 1])].x[0], fig.data[int(path[i + 1])].y[0], fig.data[int(path[i + 1])].z[0]
             fig.add_trace(
                 go.Scatter3d(x=[x1, x2], y=[y1, y2], z=[z1, z2], mode='lines', name=f'Path {path[i]}-{path[i + 1]}',
                              line=dict(color='red', width=4)))
@@ -304,8 +304,9 @@ def visualize_graph_3d(node1, node2):
 
 
 # Création des entrées pour Gradio
-node1_input = gr.Number(label="Numéro du nœud 1")
-node2_input = gr.Number(label="Numéro du nœud 2")
+node1_input = gr.Slider(label="Choix du nœud 1", minimum=0, maximum=100, step=1)
+node2_input = gr.Slider(label="Choix du nœud 2", minimum=0, maximum=100, step=1)
 
 # Interface Gradio
-gr.Interface(fn=visualize_graph_3d, inputs=[node1_input, node2_input], outputs="plot").launch()
+
+gr.Interface(fn=visualize_graph_3d, inputs=[node1_input, node2_input], outputs="plot", title="En route avec Thierry").launch()

@@ -344,7 +344,9 @@ with gr.Blocks(theme=gr.themes.Soft()) as demo:
     def visualize_graph_3d():
         num_nodes = 100
         fig = go.Figure()
-
+        node1 = 0
+        node2 = 0
+        node3 = 0
         for node in range(num_nodes):
             x = np.random.rand()
             y = np.random.rand()
@@ -352,12 +354,40 @@ with gr.Blocks(theme=gr.themes.Soft()) as demo:
 
             if node in tier1_nodes:
                 color = tiers_1_color
+                if node1 == 0:
+                    legendgroupnode = 'Tiers 1'
+                    titrelegende = 'Tiers 1 Noeuds'
+                    montrerlegende = True
+                    node1 += 1
+                else:
+                    montrerlegende = False
+                    legendgroupnode = None
+                    titrelegende = None
             elif node in tier2_nodes:
                 color = tiers_2_color
+                if node2 == 0:
+                    legendgroupnode = 'Tiers 2'
+                    titrelegende = 'Tiers 2 Noeuds'
+                    montrerlegende = True
+                    node2 += 1
+                else:
+                    montrerlegende = False
+                    legendgroupnode = None
+                    titrelegende = None
             else :
                 color = tiers_3_color
+                if node3 == 0:
+                    montrerlegende = True
+                    node3 += 1
+                    legendgroupnode = 'Tiers 3'
+                    titrelegende = 'Tiers 3 Noeuds'
+                else:
+                    montrerlegende = False
+                    legendgroupnode = None
+                    titrelegende = None
 
-            fig.add_trace(go.Scatter3d(x=[x], y=[y], z=[z], mode='markers', name=f'Node {node}', marker=dict(color=color), showlegend=False))
+            fig.add_trace(go.Scatter3d(x=[x], y=[y], z=[z], mode='markers', legendgroup=legendgroupnode,
+                                       legendgrouptitle_text=titrelegende, name=f'Node {node}', marker=dict(color=color), showlegend=montrerlegende))
 
         for nodea in range(num_nodes):
             for nodeb, _ in graph[nodea]:

@@ -273,7 +273,7 @@ with gr.Blocks(theme=gr.themes.Soft()) as demo:
         message1 = f"Vous avez réactualisé à 1."
         message = ""
         num_nodes = 100
-        fig = go.Figure()
+        fig_create = go.Figure()
         node_1 = 0
         node_2 = 0
         node_3 = 0
@@ -285,54 +285,54 @@ with gr.Blocks(theme=gr.themes.Soft()) as demo:
             if node in tier1_nodes:
                 color = tiers_1_color
                 if node_1 == 0:
-                    legendgroupnode = 'Tiers 1'
-                    titrelegende = 'Tiers 1 Noeuds'
-                    montrerlegende = True
+                    legend_group_node = 'Tiers 1'
+                    titre_legende = 'Tiers 1 Noeuds'
+                    montrer_legende = True
                     node_1 += 1
                 else:
-                    montrerlegende = False
-                    legendgroupnode = None
-                    titrelegende = None
+                    montrer_legende = False
+                    legend_group_node = None
+                    titre_legende = None
             elif node in tier2_nodes:
                 color = tiers_2_color
                 if node_2 == 0:
-                    legendgroupnode = 'Tiers 2'
-                    titrelegende = 'Tiers 2 Noeuds'
-                    montrerlegende = True
+                    legend_group_node = 'Tiers 2'
+                    titre_legende = 'Tiers 2 Noeuds'
+                    montrer_legende = True
                     node_2 += 1
                 else:
-                    montrerlegende = False
-                    legendgroupnode = None
-                    titrelegende = None
+                    montrer_legende = False
+                    legend_group_node = None
+                    titre_legende = None
             else:
                 color = tiers_3_color
                 if node_3 == 0:
-                    montrerlegende = True
+                    montrer_legende = True
                     node_3 += 1
-                    legendgroupnode = 'Tiers 3'
-                    titrelegende = 'Tiers 3 Noeuds'
+                    legend_group_node = 'Tiers 3'
+                    titre_legende = 'Tiers 3 Noeuds'
                 else:
-                    montrerlegende = False
-                    legendgroupnode = None
-                    titrelegende = None
+                    montrer_legende = False
+                    legend_group_node = None
+                    titre_legende = None
 
-            fig.add_trace(go.Scatter3d(x=[x], y=[y], z=[z], mode='markers', legendgroup=legendgroupnode,
-                                       legendgrouptitle_text=titrelegende, name=f'Node {node}',
-                                       marker=dict(color=color), showlegend=montrerlegende))
+            fig_create.add_trace(go.Scatter3d(x=[x], y=[y], z=[z], mode='markers', legendgroup=legend_group_node,
+                                              legendgrouptitle_text=titre_legende, name=f'Node {node}',
+                                              marker=dict(color=color), showlegend=montrer_legende))
 
         for node1 in range(num_nodes):
             for node2, _ in graph[node1]:
-                x1, y1, z1 = fig.data[node1].x[0], fig.data[node1].y[0], fig.data[node1].z[0]
-                x2, y2, z2 = fig.data[node2].x[0], fig.data[node2].y[0], fig.data[node2].z[0]
-                fig.add_trace(
+                x1, y1, z1 = fig_create.data[node1].x[0], fig_create.data[node1].y[0], fig_create.data[node1].z[0]
+                x2, y2, z2 = fig_create.data[node2].x[0], fig_create.data[node2].y[0], fig_create.data[node2].z[0]
+                fig_create.add_trace(
                     go.Scatter3d(x=[x1, x2], y=[y1, y2], z=[z1, z2], mode='lines', name=f'Edge {node1}-{node2}',
                                  line=dict(color='grey', width=2), showlegend=False))
-        return 1, 1, message1, message, fig
+        return 1, 1, message1, message, fig_create
 
 
     def chemin_court(node1, node2):
         num_nodes = 100
-        fig = go.Figure()
+        fig_create = go.Figure()
         node_1 = 0
         node_2 = 0
         node_3 = 0
@@ -344,40 +344,40 @@ with gr.Blocks(theme=gr.themes.Soft()) as demo:
             if node in tier1_nodes:
                 color = tiers_1_color
                 if node_1 == 0:
-                    legendgroupnode = 'Tiers 1'
-                    titrelegende = 'Tiers 1 Noeuds'
-                    montrerlegende = True
+                    legend_group_node = 'Tiers 1'
+                    titre_legende = 'Tiers 1 Noeuds'
+                    montrer_legende = True
                     node_1 += 1
                 else:
-                    montrerlegende = False
-                    legendgroupnode = None
-                    titrelegende = None
+                    montrer_legende = False
+                    legend_group_node = None
+                    titre_legende = None
             elif node in tier2_nodes:
                 color = tiers_2_color
                 if node_2 == 0:
-                    legendgroupnode = 'Tiers 2'
-                    titrelegende = 'Tiers 2 Noeuds'
-                    montrerlegende = True
+                    legend_group_node = 'Tiers 2'
+                    titre_legende = 'Tiers 2 Noeuds'
+                    montrer_legende = True
                     node_2 += 1
                 else:
-                    montrerlegende = False
-                    legendgroupnode = None
-                    titrelegende = None
+                    montrer_legende = False
+                    legend_group_node = None
+                    titre_legende = None
             else:
                 color = tiers_3_color
                 if node_3 == 0:
-                    montrerlegende = True
+                    montrer_legende = True
                     node_3 += 1
-                    legendgroupnode = 'Tiers 3'
-                    titrelegende = 'Tiers 3 Noeuds'
+                    legend_group_node = 'Tiers 3'
+                    titre_legende = 'Tiers 3 Noeuds'
                 else:
-                    montrerlegende = False
-                    legendgroupnode = None
-                    titrelegende = None
+                    montrer_legende = False
+                    legend_group_node = None
+                    titre_legende = None
 
-            fig.add_trace(go.Scatter3d(x=[x], y=[y], z=[z], mode='markers', legendgroup=legendgroupnode,
-                                       legendgrouptitle_text=titrelegende, name=f'Node {node}',
-                                       marker=dict(color=color), showlegend=montrerlegende))
+            fig_create.add_trace(go.Scatter3d(x=[x], y=[y], z=[z], mode='markers', legendgroup=legend_group_node,
+                                              legendgrouptitle_text=titre_legende, name=f'Node {node}',
+                                              marker=dict(color=color), showlegend=montrer_legende))
 
         if node1 != node2:
             path = path_user(graph, node1, node2)
@@ -385,27 +385,27 @@ with gr.Blocks(theme=gr.themes.Soft()) as demo:
             message = "-> ".join(str(node) for node in path)
             path = path_user(graph, node1, node2)
             for i in range(len(path) - 1):
-                x1, y1, z1 = fig.data[int(path[i])].x[0], fig.data[int(path[i])].y[0], fig.data[int(path[i])].z[0]
-                x2, y2, z2 = fig.data[int(path[i + 1])].x[0], fig.data[int(path[i + 1])].y[0], \
-                    fig.data[int(path[i + 1])].z[
+                x1, y1, z1 = fig_create.data[int(path[i])].x[0], fig_create.data[int(path[i])].y[0], fig_create.data[int(path[i])].z[0]
+                x2, y2, z2 = fig_create.data[int(path[i + 1])].x[0], fig_create.data[int(path[i + 1])].y[0], \
+                    fig_create.data[int(path[i + 1])].z[
                         0]
-                fig.add_trace(
+                fig_create.add_trace(
                     go.Scatter3d(x=[x1, x2], y=[y1, y2], z=[z1, z2], mode='lines', name=f'Path {path[i]}-{path[i + 1]}',
                                  line=dict(color='black', width=4), showlegend=False))
 
-            fig.update_layout(annotations=[
+            fig_create.update_layout(annotations=[
                 dict(x=0.5, y=-0.15, showarrow=False, xref="paper", yref="paper", align="center",
                      font=dict(size=12))])
-            return message1, message, fig
+            return message1, message, fig_create
         else:
             message1 = f"Vous avez choisi le même noeud veuillez changer."
             message = ""
-        return message1, message, fig
+        return message1, message, fig_create
 
 
     def visualize_graph_3d():
         num_nodes = 100
-        fig = go.Figure()
+        fig_create = go.Figure()
         node1 = 0
         node2 = 0
         node3 = 0
@@ -417,53 +417,53 @@ with gr.Blocks(theme=gr.themes.Soft()) as demo:
             if node in tier1_nodes:
                 color = tiers_1_color
                 if node1 == 0:
-                    legendgroupnode = 'Tiers 1'
-                    titrelegende = 'Tiers 1 Noeuds'
-                    montrerlegende = True
+                    legend_group_node = 'Tiers 1'
+                    titre_legende = 'Tiers 1 Noeuds'
+                    montrer_legende = True
                     node1 += 1
                 else:
-                    montrerlegende = False
-                    legendgroupnode = None
-                    titrelegende = None
+                    montrer_legende = False
+                    legend_group_node = None
+                    titre_legende = None
             elif node in tier2_nodes:
                 color = tiers_2_color
                 if node2 == 0:
-                    legendgroupnode = 'Tiers 2'
-                    titrelegende = 'Tiers 2 Noeuds'
-                    montrerlegende = True
+                    legend_group_node = 'Tiers 2'
+                    titre_legende = 'Tiers 2 Noeuds'
+                    montrer_legende = True
                     node2 += 1
                 else:
-                    montrerlegende = False
-                    legendgroupnode = None
-                    titrelegende = None
+                    montrer_legende = False
+                    legend_group_node = None
+                    titre_legende = None
             else:
                 color = tiers_3_color
                 if node3 == 0:
-                    montrerlegende = True
+                    montrer_legende = True
                     node3 += 1
-                    legendgroupnode = 'Tiers 3'
-                    titrelegende = 'Tiers 3 Noeuds'
+                    legend_group_node = 'Tiers 3'
+                    titre_legende = 'Tiers 3 Noeuds'
                 else:
-                    montrerlegende = False
-                    legendgroupnode = None
-                    titrelegende = None
+                    montrer_legende = False
+                    legend_group_node = None
+                    titre_legende = None
 
-            fig.add_trace(go.Scatter3d(x=[x], y=[y], z=[z], mode='markers', legendgroup=legendgroupnode,
-                                       legendgrouptitle_text=titrelegende, name=f'Node {node}',
-                                       marker=dict(color=color), showlegend=montrerlegende))
+            fig_create.add_trace(go.Scatter3d(x=[x], y=[y], z=[z], mode='markers', legendgroup=legend_group_node,
+                                              legendgrouptitle_text=titre_legende, name=f'Node {node}',
+                                              marker=dict(color=color), showlegend=montrer_legende))
 
         for nodea in range(num_nodes):
             for nodeb, _ in graph[nodea]:
-                x1, y1, z1 = fig.data[nodea].x[0], fig.data[nodea].y[0], fig.data[nodea].z[0]
-                x2, y2, z2 = fig.data[nodeb].x[0], fig.data[nodeb].y[0], fig.data[nodeb].z[0]
-                fig.add_trace(
+                x1, y1, z1 = fig_create.data[nodea].x[0], fig_create.data[nodea].y[0], fig_create.data[nodea].z[0]
+                x2, y2, z2 = fig_create.data[nodeb].x[0], fig_create.data[nodeb].y[0], fig_create.data[nodeb].z[0]
+                fig_create.add_trace(
                     go.Scatter3d(x=[x1, x2], y=[y1, y2], z=[z1, z2], mode='lines', name=f'Edge {nodea}-{nodeb}',
                                  line=dict(color='grey', width=2), showlegend=False))
 
-        fig.update_layout(annotations=[
+        fig_create.update_layout(annotations=[
             dict(x=0.5, y=-0.15, showarrow=False, xref="paper", yref="paper", align="center",
                  font=dict(size=12))])
-        return fig
+        return fig_create
 
 
     with gr.Row():
@@ -475,18 +475,18 @@ with gr.Blocks(theme=gr.themes.Soft()) as demo:
             button = gr.Button("Submit", variant="primary")
             clear = gr.Button("Clear")
 
-        fig = go.Figure()
+        fig_create = go.Figure()
 
         for node in range(num_nodes):
             x = np.random.rand()
             y = np.random.rand()
             z = np.random.rand()
-            fig.add_trace(go.Scatter3d(x=[x], y=[y], z=[z], mode='markers', name=None))
+            fig_create.add_trace(go.Scatter3d(x=[x], y=[y], z=[z], mode='markers', name=None))
 
         with gr.Column(scale=2):
-            fig = go.Figure()
-            fig.add_trace(go.Scatter3d(x=[x], y=[y], z=[z], mode='markers', name=None))
-            plot = gr.Plot(fig, label="Graph réseau", value=visualize_graph_3d)
+            fig_create = go.Figure()
+            fig_create.add_trace(go.Scatter3d(x=[x], y=[y], z=[z], mode='markers', name=None))
+            plot = gr.Plot(fig_create, label="Graph réseau", value=visualize_graph_3d)
             demo.load(visualize_graph_3d, outputs=[plot])
 
     button.click(chemin_court, [node1_input, node2_input], [output, output2, plot])

@@ -23,9 +23,9 @@ class Node:
 
 
 class Network:
-    # Le réseau est caractérisé par l'attribut nœuds qui correspond à une liste de n nœuds (ainsi qu'un attribut
-    # graphe qui correspond à un dictionnaire dont les clés sont des couples de nœuds reliés entre eux et la valeur
-    # correspond au temps de communication de l'arête → juste pour les vérifications).
+    """Le réseau est caractérisé par l'attribut nœuds qui correspond à une liste de n nœuds (ainsi qu'un attribut
+    graphe qui correspond à un dictionnaire dont les clés sont des couples de nœuds reliés entre eux et la valeur
+    correspond au temps de communication de l'arête → juste pour les vérifications)."""
     def __init__(self, n):
         self.nodes = [Node(i) for i in range(n)]
 
@@ -286,7 +286,7 @@ with gr.Blocks(theme=gr.themes.Soft()) as demo:
                 color = tiers_1_color
                 if node_1 == 0:
                     legend_group_node = 'Tiers 1'
-                    titre_legende = 'Tiers 1 Noeuds'
+                    titre_legende = 'Groupe de Tata Sandrine'
                     montrer_legende = True
                     node_1 += 1
                 else:
@@ -297,7 +297,7 @@ with gr.Blocks(theme=gr.themes.Soft()) as demo:
                 color = tiers_2_color
                 if node_2 == 0:
                     legend_group_node = 'Tiers 2'
-                    titre_legende = 'Tiers 2 Noeuds'
+                    titre_legende = 'Groupe de Tonton Thierry'
                     montrer_legende = True
                     node_2 += 1
                 else:
@@ -310,7 +310,7 @@ with gr.Blocks(theme=gr.themes.Soft()) as demo:
                     montrer_legende = True
                     node_3 += 1
                     legend_group_node = 'Tiers 3'
-                    titre_legende = 'Tiers 3 Noeuds'
+                    titre_legende = 'Groupe des poupées'
                 else:
                     montrer_legende = False
                     legend_group_node = None
@@ -345,7 +345,7 @@ with gr.Blocks(theme=gr.themes.Soft()) as demo:
                 color = tiers_1_color
                 if node_1 == 0:
                     legend_group_node = 'Tiers 1'
-                    titre_legende = 'Tiers 1 Noeuds'
+                    titre_legende = 'Groupe de Tata Sandrine'
                     montrer_legende = True
                     node_1 += 1
                 else:
@@ -356,7 +356,7 @@ with gr.Blocks(theme=gr.themes.Soft()) as demo:
                 color = tiers_2_color
                 if node_2 == 0:
                     legend_group_node = 'Tiers 2'
-                    titre_legende = 'Tiers 2 Noeuds'
+                    titre_legende = 'Groupe de Tonton Thierry'
                     montrer_legende = True
                     node_2 += 1
                 else:
@@ -369,7 +369,7 @@ with gr.Blocks(theme=gr.themes.Soft()) as demo:
                     montrer_legende = True
                     node_3 += 1
                     legend_group_node = 'Tiers 3'
-                    titre_legende = 'Tiers 3 Noeuds'
+                    titre_legende = 'Groupe des poupées'
                 else:
                     montrer_legende = False
                     legend_group_node = None
@@ -418,7 +418,7 @@ with gr.Blocks(theme=gr.themes.Soft()) as demo:
                 color = tiers_1_color
                 if node1 == 0:
                     legend_group_node = 'Tiers 1'
-                    titre_legende = 'Tiers 1 Noeuds'
+                    titre_legende = 'Groupe de Tata Sandrine'
                     montrer_legende = True
                     node1 += 1
                 else:
@@ -429,7 +429,7 @@ with gr.Blocks(theme=gr.themes.Soft()) as demo:
                 color = tiers_2_color
                 if node2 == 0:
                     legend_group_node = 'Tiers 2'
-                    titre_legende = 'Tiers 2 Noeuds'
+                    titre_legende = 'Groupe de Tonton Thierry'
                     montrer_legende = True
                     node2 += 1
                 else:
@@ -442,7 +442,7 @@ with gr.Blocks(theme=gr.themes.Soft()) as demo:
                     montrer_legende = True
                     node3 += 1
                     legend_group_node = 'Tiers 3'
-                    titre_legende = 'Tiers 3 Noeuds'
+                    titre_legende = 'Groupe des poupées'
                 else:
                     montrer_legende = False
                     legend_group_node = None
@@ -472,8 +472,8 @@ with gr.Blocks(theme=gr.themes.Soft()) as demo:
             node2_input = gr.Slider(label="Choix du nœud 2", minimum=1, maximum=100, step=1)
             output = gr.Textbox(label="En attente de votre choix de noeuds")
             output2 = gr.Textbox(label="Le plus court chemin")
-            button = gr.Button("Submit", variant="primary")
-            clear = gr.Button("Clear")
+            button = gr.Button("Soumettre", variant="primary")
+            clear = gr.Button("Effacer")
 
         fig_create = go.Figure()
 
@@ -483,7 +483,7 @@ with gr.Blocks(theme=gr.themes.Soft()) as demo:
             z = np.random.rand()
             fig_create.add_trace(go.Scatter3d(x=[x], y=[y], z=[z], mode='markers', name=None))
 
-        with gr.Column(scale=2):
+        with gr.Column(scale=3):
             fig_create = go.Figure()
             fig_create.add_trace(go.Scatter3d(x=[x], y=[y], z=[z], mode='markers', name=None))
             plot = gr.Plot(fig_create, label="Graph réseau", value=visualize_graph_3d)
